@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huellas de Esperanza | Adopción responsable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #1f8a78;
+    --verde-oscuro: #14665a;
+    --verde-claro: #e3f4f0;
+    --naranja: #f59e3b;
+    --naranja-oscuro: #e08414;
+    --crema: #fbf8f3;
+    --texto: #26363a;
+    --gris: #6b7b80;
+    --borde: #e5ece9;
+    --sombra: 0 6px 20px rgba(20, 102, 90, .10);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: 'Nunito', system-ui, sans-serif; background: var(--crema); color: var(--texto); line-height: 1.5; }
+  h1, h2, h3 { font-family: 'Poppins', sans-serif; margin: 0; }
+
+  /* ---------- Barra superior ---------- */
+  .topbar { background: var(--verde-oscuro); color: #dff3ee; font-size: .85rem; padding: 6px 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+  header.nav { position: sticky; top: 0; z-index: 20; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .nav-in { max-width: 1120px; margin: auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: 'Poppins'; font-weight: 700; font-size: 1.2rem; color: var(--verde-oscuro); cursor: pointer; }
+  .logo span.ico { background: var(--verde); color: #fff; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-size: 1.3rem; }
+  nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  nav button { border: 0; background: transparent; padding: 10px 16px; border-radius: 999px; font: 700 .95rem 'Nunito'; color: var(--texto); cursor: pointer; transition: .2s; }
+  nav button:hover { background: var(--verde-claro); }
+  nav button.activo { background: var(--verde); color: #fff; }
+
+  /* ---------- Portada ---------- */
+  .hero { background: linear-gradient(135deg, var(--verde) 0%, #2bb39b 60%, #5fd0bb 100%); color: #fff; position: relative; overflow: hidden; }
+  .hero-in { max-width: 1120px; margin: auto; padding: 56px 20px 70px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 30px; align-items: center; }
+  .hero h1 { font-size: clamp(1.9rem, 4vw, 3rem); line-height: 1.15; }
+  .hero p { font-size: 1.1rem; opacity: .95; max-width: 520px; margin: 14px 0 24px; }
+  .hero .emoji-grande { font-size: clamp(6rem, 16vw, 11rem); text-align: center; filter: drop-shadow(0 10px 18px rgba(0,0,0,.18)); }
+  .hero::before, .hero::after { content: ""; position: absolute; border-radius: 50%; background: rgba(255,255,255,.08); }
+  .hero::before { width: 320px; height: 320px; right: -80px; top: -100px; }
+  .hero::after { width: 200px; height: 200px; left: -60px; bottom: -80px; }
+  .btn { border: 0; padding: 12px 22px; border-radius: 999px; font: 800 .95rem 'Nunito'; cursor: pointer; background: var(--verde); color: #fff; transition: .2s; }
+  .btn:hover { background: var(--verde-oscuro); transform: translateY(-1px); }
+  .btn.naranja { background: var(--naranja); color: #3a2400; }
+  .btn.naranja:hover { background: var(--naranja-oscuro); }
+  .btn.rojo { background: #c24a4a; }
+  .btn.rojo:hover { background: #a63a3a; }
+  .btn.gris { background: #e3e8e7; color: var(--texto); }
+  .btn.peq { padding: 8px 14px; font-size: .85rem; }
+
+  /* ---------- Contadores ---------- */
+  .stats { max-width: 1000px; margin: -38px auto 0; padding: 0 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; position: relative; z-index: 2; }
+  .stat { background: #fff; border-radius: 16px; padding: 18px; text-align: center; box-shadow: var(--sombra); }
+  .stat b { display: block; font: 800 2rem 'Poppins'; color: var(--verde); }
+  .stat span { color: var(--gris); font-weight: 700; font-size: .9rem; }
+
+  main { max-width: 1120px; margin: 0 auto; padding: 40px 20px 20px; }
+  .vista { display: none; }
+  .vista.visible { display: block; }
+  .titulo-seccion { text-align: center; margin-bottom: 22px; }
+  .titulo-seccion h2 { font-size: 1.8rem; color: var(--verde-oscuro); }
+  .titulo-seccion p { color: var(--gris); margin: 6px 0 0; }
+
+  /* ---------- Filtros ---------- */
+  .chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 26px; }
+  .chip { border: 2px solid var(--borde); background: #fff; padding: 8px 18px; border-radius: 999px; font: 700 .9rem 'Nunito'; cursor: pointer; color: var(--gris); transition: .2s; }
+  .chip:hover { border-color: var(--verde); color: var(--verde); }
+  .chip.activo { background: var(--verde); border-color: var(--verde); color: #fff; }
+
+  /* ---------- Tarjetas de mascotas ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 22px; }
+  .card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: var(--sombra); transition: .25s; display: flex; flex-direction: column; }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 14px 30px rgba(20,102,90,.18); }
+  .foto { height: 170px; display: grid; place-items: center; font-size: 4.5rem; position: relative; background: linear-gradient(135deg, #cdeee7, #f6e3c5); }
+  .foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .foto .badge { position: absolute; top: 12px; right: 12px; }
+  .card-body { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .card-body h3 { font-size: 1.25rem; color: var(--verde-oscuro); }
+  .meta { color: var(--gris); font-size: .9rem; font-weight: 700; }
+  .desc { font-size: .95rem; flex: 1; }
+  .card-body .btn { margin-top: 10px; width: 100%; }
+
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: .78rem; font-weight: 800; text-transform: capitalize; }
+  .disponible, .aprobada { background: #d6f3df; color: #17703a; }
+  .en_proceso, .pendiente { background: #fff0cc; color: #8a5d00; }
+  .adoptada, .rechazada { background: #fadada; color: #9b2c2c; }
+
+  /* ---------- Cómo adoptar ---------- */
+  .pasos { margin-top: 56px; }
+  .pasos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .paso { background: #fff; border-radius: 18px; padding: 22px; text-align: center; box-shadow: var(--sombra); }
+  .paso .num { width: 46px; height: 46px; margin: 0 auto 10px; border-radius: 50%; background: var(--naranja); color: #3a2400; font: 800 1.2rem 'Poppins'; display: grid; place-items: center; }
+  .paso h3 { font-size: 1.05rem; color: var(--verde-oscuro); margin-bottom: 4px; }
+  .paso p { margin: 0; color: var(--gris); font-size: .93rem; }
+
+  /* ---------- Tabla de solicitudes ---------- */
+  .tabla-wrap { background: #fff; border-radius: 18px; box-shadow: var(--sombra); overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 760px; }
+  th { background: var(--verde-claro); color: var(--verde-oscuro); text-align: left; padding: 14px; font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+  td { padding: 14px; border-bottom: 1px solid var(--borde); font-size: .93rem; vertical-align: middle; }
+  tr:last-child td { border-bottom: 0; }
+  td .btn { margin: 2px 2px 2px 0; }
+  .vacio { text-align: center; color: var(--gris); padding: 30px; grid-column: 1 / -1; }
+
+  /* ---------- Formularios ---------- */
+  .form-box { background: #fff; padding: 28px; border-radius: 20px; max-width: 560px; margin: auto; box-shadow: var(--sombra); }
+  .form-box h2 { color: var(--verde-oscuro); margin-bottom: 6px; }
+  label { display: block; margin: 14px 0 5px; font-weight: 800; font-size: .9rem; }
+  input, textarea, select { width: 100%; padding: 11px 13px; border: 2px solid var(--borde); border-radius: 12px; font: inherit; background: #fcfdfd; transition: .2s; }
+  input:focus, textarea:focus { outline: 0; border-color: var(--verde); background: #fff; }
+  .fila { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .acciones { display: flex; gap: 10px; margin-top: 22px; }
+
+  dialog { border: 0; border-radius: 22px; padding: 28px; width: min(480px, 92vw); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+  dialog::backdrop { background: rgba(10, 40, 36, .55); backdrop-filter: blur(3px); }
+  dialog h2 { color: var(--verde-oscuro); }
+
+  /* ---------- Pie ---------- */
+  footer { margin-top: 60px; background: var(--verde-oscuro); color: #cfe9e3; }
+  .foot-in { max-width: 1120px; margin: auto; padding: 36px 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+  footer h4 { color: #fff; margin: 0 0 8px; font-family: 'Poppins'; }
+  footer p { margin: 3px 0; font-size: .92rem; }
+  .copy { text-align: center; padding: 14px; background: #0f4f45; font-size: .85rem; }
+
+  #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); padding: 14px 24px; border-radius: 14px; color: #fff; display: none; z-index: 50; max-width: 90vw; font-weight: 700; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+  #toast.ok { background: var(--verde); }
+  #toast.error { background: #c24a4a; }
+
+  @media (max-width: 760px) {
+    .hero-in { grid-template-columns: 1fr; text-align: center; }
+    .hero p { margin-left: auto; margin-right: auto; }
+    .hero .emoji-grande { order: -1; }
+    .fila { grid-template-columns: 1fr; }
+    .stats { margin-top: -28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>📍 Bogotá, Colombia</span>
+  <span>📞 +57 300 000 0000 · ✉️ contacto@huellasdeesperanza.org</span>
+</div>
+
+<header class="nav">
+  <div class="nav-in">
+    <div class="logo" onclick="mostrar('mascotas')"><span class="ico">🐾</span> Huellas de Esperanza</div>
+    <nav>
+      <button id="btn-mascotas" class="activo" onclick="mostrar('mascotas')">Mascotas</button>
+      <button id="btn-solicitudes" onclick="mostrar('solicitudes')">Solicitudes</button>
+      <button id="btn-registrar" onclick="mostrar('registrar')">Registrar mascota</button>
+    </nav>
+  </div>
+</header>
+
+<!-- PORTADA (solo en la vista de mascotas) -->
+<section class="hero" id="hero">
+  <div class="hero-in">
+    <div>
+      <h1>Dale un hogar a quien más lo necesita</h1>
+      <p>Cada adopción es una vida que cambia. Conoce a nuestros peludos, envía tu solicitud en minutos y nosotros te acompañamos en todo el proceso.</p>
+      <button class="btn naranja" onclick="document.getElementById('lista-mascotas').scrollIntoView()">Conocer mascotas 🐶</button>
+    </div>
+    <div class="emoji-grande">🐕‍🦺</div>
+  </div>
+</section>
+<div class="stats" id="stats">
+  <div class="stat"><b id="st-disp">–</b><span>Esperando hogar</span></div>
+  <div class="stat"><b id="st-adop">–</b><span>Ya adoptadas</span></div>
+  <div class="stat"><b id="st-total">–</b><span>Mascotas registradas</span></div>
+</div>
+
+<main>
+  <!-- VISTA 1: MASCOTAS -->
+  <section id="vista-mascotas" class="vista visible">
+    <div class="titulo-seccion">
+      <h2>Nuestras mascotas</h2>
+      <p>Todas están vacunadas, desparasitadas y listas para amar.</p>
+    </div>
+    <div class="chips" id="chips-m">
+      <button class="chip activo" data-estado="">Todas</button>
+      <button class="chip" data-estado="disponible">Disponibles</button>
+      <button class="chip" data-estado="en_proceso">En proceso</button>
+      <button class="chip" data-estado="adoptada">Adoptadas</button>
+    </div>
+    <div id="lista-mascotas" class="grid"></div>
+
+    <div class="pasos">
+      <div class="titulo-seccion"><h2>¿Cómo adoptar?</h2><p>Un proceso sencillo y responsable</p></div>
+      <div class="pasos-grid">
+        <div class="paso"><div class="num">1</div><h3>Elige a tu compañero</h3><p>Explora las mascotas disponibles y encuentra a tu match.</p></div>
+        <div class="paso"><div class="num">2</div><h3>Envía tu solicitud</h3><p>Cuéntanos quién eres y por qué quieres adoptar.</p></div>
+        <div class="paso"><div class="num">3</div><h3>Revisión de la fundación</h3><p>Nuestro equipo evalúa y aprueba o rechaza tu solicitud.</p></div>
+        <div class="paso"><div class="num">4</div><h3>¡Bienvenido a casa!</h3><p>Si es aprobada, tu nuevo amigo ya es parte de tu familia.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISTA 2: SOLICITUDES -->
+  <section id="vista-solicitudes" class="vista">
+    <div class="titulo-seccion">
+      <h2>Gestión de solicitudes</h2>
+      <p>Revisa, aprueba o rechaza las solicitudes de adopción.</p>
+    </div>
+    <div class="chips" id="chips-s">
+      <button class="chip activo" data-estado="">Todas</button>
+      <button class="chip" data-estado="pendiente">Pendientes</button>
+      <button class="chip" data-estado="aprobada">Aprobadas</button>
+      <button class="chip" data-estado="rechazada">Rechazadas</button>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Mascota</th><th>Solicitante</th><th>Contacto</th><th>Motivo</th><th>Estado</th><th>Acciones</th></tr>
+        </thead>
+        <tbody id="tabla-solicitudes"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- VISTA 3: REGISTRAR MASCOTA -->
+  <section id="vista-registrar" class="vista">
+    <form id="form-mascota" class="form-box">
+      <h2>🐾 Registrar nueva mascota</h2>
+      <p style="color:var(--gris);margin:0">Completa los datos del animal que ingresa a la fundación.</p>
+      <label>Nombre *</label><input name="nombre" required>
+      <div class="fila">
+        <div><label>Especie *</label><input name="especie" required placeholder="Perro, Gato..."></div>
+        <div><label>Raza</label><input name="raza"></div>
+      </div>
+      <label>Edad (años)</label><input name="edad_anios" type="number" min="0">
+      <label>Descripción</label><textarea name="descripcion" rows="3"></textarea>
+      <label>Enlace de foto (opcional)</label><input name="foto_url" type="url" placeholder="https://...">
+      <div class="acciones"><button class="btn" type="submit">Guardar mascota</button></div>
+    </form>
+  </section>
+</main>
+
+<!-- VENTANA: SOLICITAR ADOPCIÓN -->
+<dialog id="dlg">
+  <form id="form-solicitud">
+    <h2 id="dlg-titulo">Solicitar adopción</h2>
+    <input type="hidden" name="mascota_id">
+    <label>Tu nombre *</label><input name="nombre_solicitante" required>
+    <div class="fila">
+      <div><label>Correo *</label><input name="email" type="email" required></div>
+      <div><label>Teléfono</label><input name="telefono"></div>
+    </div>
+    <label>¿Por qué quieres adoptar?</label><textarea name="motivo" rows="3"></textarea>
+    <div class="acciones">
+      <button class="btn" type="submit">Enviar solicitud</button>
+      <button class="btn gris" type="button" onclick="dlg.close()">Cancelar</button>
+    </div>
+  </form>
+</dialog>
+
+<footer>
+  <div class="foot-in">
+    <div><h4>🐾 Huellas de Esperanza</h4><p>Fundación dedicada al rescate y la adopción responsable de mascotas.</p></div>
+    <div><h4>Contacto</h4><p>📍 Bogotá, Colombia</p><p>📞 +57 300 000 0000</p><p>✉️ contacto@huellasdeesperanza.org</p></div>
+    <div><h4>Horario</h4><p>Lunes a viernes: 8:00 a. m. – 5:00 p. m.</p><p>Sábados: 9:00 a. m. – 1:00 p. m.</p></div>
+  </div>
+  <div class="copy">© 2026 Huellas de Esperanza · Proyecto académico de Arquitectura Orientada a Servicios</div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+  // Direcciones de las dos APIs (en el despliegue las cambiamos por las URLs públicas)
+  const API_MASCOTAS = "http://127.0.0.1:8001";
+  const API_ADOPCIONES = "http://127.0.0.1:8002";
+
+  const dlg = document.getElementById("dlg");
+  let todasLasMascotas = [];
+  let filtroM = "";
+  let filtroS = "";
+
+  // ---------- Utilidades ----------
+  function esc(t) {
+    const d = document.createElement("div");
+    d.textContent = t ?? "";
+    return d.innerHTML;
+  }
+
+  function aviso(mensaje, tipo = "ok") {
+    const t = document.getElementById("toast");
+    t.textContent = mensaje;
+    t.className = tipo;
+    t.style.display = "block";
+    setTimeout(() => (t.style.display = "none"), 3500);
+  }
+
+  async function api(url, opciones = {}) {
+    let r;
+    try {
+      r = await fetch(url, { headers: { "Content-Type": "application/json" }, ...opciones });
+    } catch {
+      throw new Error("No se pudo conectar con el servicio. ¿Está encendido?");
+    }
+    let datos = null;
+    try { datos = await r.json(); } catch {}
+    if (!r.ok) {
+      const d = datos && datos.detail;
+      throw new Error(typeof d === "string" ? d : "Error " + r.status);
+    }
+    return datos;
+  }
+
+  function emojiEspecie(especie) {
+    const e = (especie || "").toLowerCase();
+    if (e.includes("perr") || e.includes("can")) return "🐶";
+    if (e.includes("gat") || e.includes("fel")) return "🐱";
+    if (e.includes("conej")) return "🐰";
+    if (e.includes("ave") || e.includes("loro") || e.includes("pájaro")) return "🐦";
+    return "🐾";
+  }
+
+  function mostrar(vista) {
+    ["mascotas", "solicitudes", "registrar"].forEach((v) => {
+      document.getElementById("vista-" + v).classList.toggle("visible", v === vista);
+      document.getElementById("btn-" + v).classList.toggle("activo", v === vista);
+    });
+    const enInicio = vista === "mascotas";
+    document.getElementById("hero").style.display = enInicio ? "block" : "none";
+    document.getElementById("stats").style.display = enInicio ? "grid" : "none";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (enInicio) cargarMascotas();
+    if (vista === "solicitudes") cargarSolicitudes();
+  }
+
+  // Filtros tipo "chip"
+  function activarChips(idContenedor, alElegir) {
+    document.getElementById(idContenedor).addEventListener("click", (ev) => {
+      const chip = ev.target.closest(".chip");
+      if (!chip) return;
+      document.querySelectorAll("#" + idContenedor + " .chip").forEach((c) => c.classList.remove("activo"));
+      chip.classList.add("activo");
+      alElegir(chip.dataset.estado);
+    });
+  }
+  activarChips("chips-m", (estado) => { filtroM = estado; cargarMascotas(); });
+  activarChips("chips-s", (estado) => { filtroS = estado; cargarSolicitudes(); });
+
+  // ---------- Mascotas (API 1) ----------
+  function pintarMascotas() {
+    const cont = document.getElementById("lista-mascotas");
+    const lista = filtroM ? todasLasMascotas.filter((m) => m.estado === filtroM) : todasLasMascotas;
+    if (!lista.length) { cont.innerHTML = '<p class="vacio">No hay mascotas para mostrar.</p>'; return; }
+    cont.innerHTML = lista.map((m) => `
+      <div class="card">
+        <div class="foto">
+          ${emojiEspecie(m.especie)}
+          ${m.foto_url ? `<img src="${esc(m.foto_url)}" alt="${esc(m.nombre)}" onerror="this.remove()">` : ""}
+          <span class="badge ${m.estado}">${m.estado.replace("_", " ")}</span>
+        </div>
+        <div class="card-body">
+          <h3>${esc(m.nombre)}</h3>
+          <div class="meta">${esc(m.especie)}${m.raza ? " · " + esc(m.raza) : ""}${m.edad_anios != null ? " · " + m.edad_anios + " año(s)" : ""}</div>
+          <div class="desc">${esc(m.descripcion)}</div>
+          ${m.estado === "disponible"
+            ? `<button class="btn naranja" onclick="abrirSolicitud(${m.id})">❤️ Quiero adoptar</button>`
+            : ""}
+        </div>
+      </div>`).join("");
+  }
+
+  async function cargarMascotas() {
+    try {
+      todasLasMascotas = await api(API_MASCOTAS + "/mascotas");
+      document.getElementById("st-disp").textContent = todasLasMascotas.filter((m) => m.estado === "disponible").length;
+      document.getElementById("st-adop").textContent = todasLasMascotas.filter((m) => m.estado === "adoptada").length;
+      document.getElementById("st-total").textContent = todasLasMascotas.length;
+      pintarMascotas();
+    } catch (e) {
+      document.getElementById("lista-mascotas").innerHTML = '<p class="vacio">No se pudieron cargar las mascotas.</p>';
+      aviso(e.message, "error");
+    }
+  }
+
+  document.getElementById("form-mascota").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const f = Object.fromEntries(new FormData(ev.target));
+    f.edad_anios = f.edad_anios === "" ? null : Number(f.edad_anios);
+    if (!f.foto_url) f.foto_url = null;
+    try {
+      await api(API_MASCOTAS + "/mascotas", { method: "POST", body: JSON.stringify(f) });
+      aviso("Mascota registrada ✅");
+      ev.target.reset();
+      mostrar("mascotas");
+    } catch (e) { aviso(e.message, "error"); }
+  });
+
+  // ---------- Solicitudes (API 2) ----------
+  function abrirSolicitud(id) {
+    const m = todasLasMascotas.find((x) => x.id === id);
+    document.getElementById("form-solicitud").reset();
+    document.querySelector("#form-solicitud [name=mascota_id]").value = id;
+    document.getElementById("dlg-titulo").textContent = "Solicitar adopción de " + (m ? m.nombre : "la mascota");
+    dlg.showModal();
+  }
+
+  document.getElementById("form-solicitud").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const f = Object.fromEntries(new FormData(ev.target));
+    f.mascota_id = Number(f.mascota_id);
+    try {
+      await api(API_ADOPCIONES + "/solicitudes", { method: "POST", body: JSON.stringify(f) });
+      dlg.close();
+      aviso("Solicitud enviada ✅ La fundación se pondrá en contacto contigo.");
+    } catch (e) { aviso(e.message, "error"); }
+  });
+
+  async function cargarSolicitudes() {
+    const tbody = document.getElementById("tabla-solicitudes");
+    try {
+      const [solicitudes, mascotas] = await Promise.all([
+        api(API_ADOPCIONES + "/solicitudes" + (filtroS ? "?estado=" + filtroS : "")),
+        api(API_MASCOTAS + "/mascotas"),
+      ]);
+      const nombres = Object.fromEntries(mascotas.map((m) => [m.id, m.nombre]));
+      if (!solicitudes.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="vacio">No hay solicitudes.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = solicitudes.map((s) => `
+        <tr>
+          <td>${s.id}</td>
+          <td><b>${esc(nombres[s.mascota_id] || "Mascota #" + s.mascota_id)}</b></td>
+          <td>${esc(s.nombre_solicitante)}</td>
+          <td>${esc(s.email)}<br><small>${esc(s.telefono)}</small></td>
+          <td>${esc(s.motivo)}</td>
+          <td><span class="badge ${s.estado}">${s.estado}</span></td>
+          <td>${s.estado === "pendiente"
+            ? `<button class="btn peq" onclick="gestionar(${s.id}, 'aprobar')">Aprobar</button>
+               <button class="btn peq rojo" onclick="gestionar(${s.id}, 'rechazar')">Rechazar</button>`
+            : "—"}</td>
+        </tr>`).join("");
+    } catch (e) {
+      tbody.innerHTML = "";
+      aviso(e.message, "error");
+    }
+  }
+
+  async function gestionar(id, accion) {
+    try {
+      await api(`${API_ADOPCIONES}/solicitudes/${id}/${accion}`, { method: "PATCH" });
+      aviso(accion === "aprobar" ? "Solicitud aprobada ✅" : "Solicitud rechazada");
+      cargarSolicitudes();
+    } catch (e) { aviso(e.message, "error"); }
+  }
+
+  // Al abrir la página
+  cargarMascotas();
+</script>
+</body>
+</html>
