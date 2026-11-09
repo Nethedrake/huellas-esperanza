@@ -286,7 +286,7 @@ Flujo completo de adopción verificado sobre los servicios desplegados:
 | 7 | `POST /solicitudes` con `mascota_id` inexistente | `404` |
 | 8 | Rechazar una solicitud pendiente | `200`, solicitud `rechazada` |
 
-Las capturas de evidencia se encuentran en la carpeta `evidencias/` (si aplica) o en el documento de entrega.
+
 
 ## Autores
 
