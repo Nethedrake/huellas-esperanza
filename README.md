@@ -2,22 +2,23 @@
 
 Plataforma web para la **Fundación Huellas de Esperanza** que centraliza la administración de mascotas disponibles para adopción y la gestión de las solicitudes de adopción. Desarrollada aplicando los principios de **Arquitectura Orientada a Servicios (SOA)** como parte del Examen 2 de la asignatura.
 
-## Producción
+##  En producción
 
 | Servicio | URL |
+|---|---|
 | Frontend | https://huellas-esperanza.onrender.com |
 | API 1 – Mascotas (Swagger) | https://huellas-api-mascotas.onrender.com/docs |
 | API 2 – Adopciones (Swagger) | https://huellas-api-adopciones.onrender.com/docs |
 
-Los servicios están en el plan gratuito de Render: tras ~15 minutos sin uso se "duermen" y la primera petición puede tardar entre 30 y 60 segundos.
+>  Los servicios están en el plan gratuito de Render: tras ~15 minutos sin uso se "duermen" y la primera petición puede tardar entre 30 y 60 segundos.
 
-# Problema y solución
+## Problema y solución
 
 **Problema:** la información de las mascotas y de las solicitudes de adopción estaba dispersa, lo que dificultaba consultar la disponibilidad de los animales, dar seguimiento a las solicitudes y controlar las adopciones.
 
 **Solución:** una plataforma con dos servicios independientes (mascotas y adopciones) que se comunican por HTTP/REST, una base de datos PostgreSQL y un frontend web que permite consultar mascotas, solicitar adopciones y gestionarlas (aprobar o rechazar).
 
-Arquitectura
+## Arquitectura
 
 ```mermaid
 flowchart LR
@@ -32,6 +33,7 @@ flowchart LR
 ### Responsabilidades de cada servicio
 
 | Servicio | Responsabilidad | Tabla que posee |
+|---|---|---|
 | **API 1 – Mascotas** | Registro, consulta, actualización y disponibilidad de los animales | `mascotas` |
 | **API 2 – Adopciones** | Registro, consulta y gestión (aprobar/rechazar) de solicitudes de adopción | `solicitudes` |
 | **Frontend** | Interfaz web que consume ambas APIs. No habla directamente con la base de datos | — |
@@ -46,7 +48,7 @@ La API 2 **nunca accede a la tabla `mascotas`**. Cuando necesita información o 
 
 ## Tecnologías
 
-- **Backend:** Python + [FastAPI](https://fastapi.tiangolo.com/) 
+- **Backend:** Python + [FastAPI](https://fastapi.tiangolo.com/) (dos APIs independientes)
 - **Cliente HTTP entre servicios:** httpx
 - **Base de datos:** PostgreSQL en [Supabase](https://supabase.com/)
 - **Frontend:** HTML, CSS y JavaScript puro
@@ -58,7 +60,8 @@ La API 2 **nunca accede a la tabla `mascotas`**. Cuando necesita información o 
 
 ### Tabla `mascotas` (API 1)
 
-Campo | Tipo | Descripción 
+| Campo | Tipo | Descripción |
+|---|---|---|
 | `id` | bigint (PK, identity) | Identificador |
 | `nombre` | text, obligatorio | Nombre de la mascota |
 | `especie` | text, obligatorio | Perro, gato, etc. |
@@ -125,7 +128,7 @@ create unique index una_aprobada_por_mascota
 5. Al aprobar una solicitud, la API 2 le pide a la API 1 cambiar el estado de la mascota a `adoptada`.
 6. Si la API de Mascotas no está disponible, la API de Adopciones responde `503`.
 
-Decisiones técnicas
+## Decisiones técnicas
 
 - **Dos servicios independientes**, cada uno dueño de sus datos, comunicados solo por HTTP/REST + JSON.
 - **Row Level Security (RLS) activado** en Supabase: la base de datos solo es accesible a través de las APIs (con la clave secreta del servidor), nunca directamente desde el frontend.
@@ -150,9 +153,9 @@ huellas-esperanza/
 └── README.md
 ```
 
-Ejecución local
+## Ejecución local
 
-Requisitos
+### Requisitos
 
 - Python 3.11 o 3.12 (recomendado)
 - Git
@@ -193,7 +196,7 @@ create unique index una_aprobada_por_mascota
   where estado = 'aprobada';
 ```
 
-Elige **"Run and enable RLS"** cuando Supabase lo pregunte.
+Elige **"Run and enable RLS"** 
 
 ### 2. Clonar e instalar
 
@@ -204,20 +207,18 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
- 3. Variables de entorno
+### 3. Variables de entorno
 
 Crea un archivo `.env` en **cada** carpeta de API (nunca lo subas a GitHub).
 
 `api-mascotas/.env`
 ```
-SUPABASE_URL=https://qzvkjgriadmhfiieklhe.supabase.co
-
-
+SUPABASE_URL= https://qzvkjgriadmhfiieklhe.supabase.co
 ```
 
 `api-adopciones/.env`
 ```
-SUPABASE_URL=https://qzvkjgriadmhfiieklhe.supabase.co
+SUPABASE_URL= https://qzvkjgriadmhfiieklhe.supabase.co
 MASCOTAS_API_URL=http://127.0.0.1:8001
 ```
 
@@ -256,18 +257,26 @@ const API_ADOPCIONES = "http://127.0.0.1:8002";
 | Swagger API 1 | http://127.0.0.1:8001/docs |
 | Swagger API 2 | http://127.0.0.1:8002/docs |
 
-Despliegue (Render)
+## ☁️ Despliegue (Render)
 
 | Servicio | Tipo | Root Directory | Build | Start |
+|---|---|---|---|---|
 | API Mascotas | Web Service | `api-mascotas` | `pip install -r requirements.txt` | `uvicorn main:app --host 0.0.0.0 --port $PORT` |
 | API Adopciones | Web Service | `api-adopciones` | `pip install -r requirements.txt` | `uvicorn main:app --host 0.0.0.0 --port $PORT` |
+| Frontend | Static Site | `frontend` | `echo ok` | Publish directory: `.` |
 
+Variables de entorno en Render:
 
-Pruebas de integración
+- **API Mascotas:** `SUPABASE_URL`, `SUPABASE_KEY`, `PYTHON_VERSION=3.12.8`
+- **API Adopciones:** `SUPABASE_URL`, `SUPABASE_KEY`, `PYTHON_VERSION=3.12.8`, `MASCOTAS_API_URL` (URL pública de la API 1)
+- **Frontend:** ninguna
+
+## Pruebas de integración
 
 Flujo completo de adopción verificado sobre los servicios desplegados:
 
 | # | Prueba | Resultado esperado |
+|---|---|---|
 | 1 | `POST /solicitudes` para una mascota disponible | `201`, solicitud `pendiente` |
 | 2 | Segunda solicitud para la misma mascota | `201` (sigue disponible) |
 | 3 | `PATCH /solicitudes/{id}/aprobar` | `200`, solicitud `aprobada` |
@@ -277,7 +286,11 @@ Flujo completo de adopción verificado sobre los servicios desplegados:
 | 7 | `POST /solicitudes` con `mascota_id` inexistente | `404` |
 | 8 | Rechazar una solicitud pendiente | `200`, solicitud `rechazada` |
 
+Las capturas de evidencia se encuentran en la carpeta `evidencias/` (si aplica) o en el documento de entrega.
 
-##  Autores
+## Autores
+
 - Juan Diego Trigos Benavides - 0192184
+
+
 Proyecto académico: Examen 2, Arquitectura Orientada a Servicios · Noviembre 2026
